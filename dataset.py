@@ -1,5 +1,5 @@
 import lyricsgenius
-genius = lyricsgenius.Genius("tzz1gzLd2XN0FDzQjmwPnXZYi8P9bVLVnXPsznqLyyzyzYH04TPwZaPGuUB30ZiU")
+genius = lyricsgenius.Genius("")
 
 
 def save_song(song_artist: str, song_name: str, lyrics: str):
