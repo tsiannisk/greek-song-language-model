@@ -4,12 +4,11 @@ from torch.nn import functional as F
 
 torch.manual_seed(1337)
 cores = 6
-heads = 6
-head_sze = 20
-total_chr = 1
-embedding_size = 120
-context = 64
-inf = 1e12
+heads = 8
+head_sze = 64
+total_chr = ...
+embedding_size = 512
+context = 256
 p = 0.2
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
@@ -35,7 +34,7 @@ class Head(nn.Module):
 
         tmp = queries @ keys.transpose(-2, -1) * keys.shape[-1] ** -0.5
 
-        tmp = tmp.masked_fill(self.trill[:T, :T] == 0, float(-inf))
+        tmp = tmp.masked_fill(self.trill[:T, :T] == 0, float('-inf'))
 
         tmp = F.softmax(tmp, dim=-1)
 
@@ -126,7 +125,9 @@ class Transformer(nn.Module):
             B, T, C = logits.shape
             logits = logits.view(B * T, C)
             t = t.view(B * T)
-            loss = F.cross_entropy(logits, t)
+             loss = F.cross_entropy(logits, t)
+        
+        return logits,loss
 
     def generate(self, ans, max_chars):
 
